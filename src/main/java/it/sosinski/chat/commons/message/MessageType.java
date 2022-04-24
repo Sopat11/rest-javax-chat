@@ -1,4 +1,4 @@
-package it.sosinski.chat.domain.message;
+package it.sosinski.chat.commons.message;
 
 public enum MessageType {
 
