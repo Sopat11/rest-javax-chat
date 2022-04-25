@@ -22,7 +22,7 @@ public class CustomRestService implements RestService {
     ResteasyWebTarget payments = restClient.target("http://localhost:8080/chat/api/channels");
 
     @Override
-    public void process(Integer channelId, String text, String name) {
+    public void process(Long channelId, String text, String name) {
         if (CommandsUtils.isAskingToPrintChannels(text)) {
 
             var response = payments.request()

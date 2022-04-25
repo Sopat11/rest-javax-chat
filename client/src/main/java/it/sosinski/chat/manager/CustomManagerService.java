@@ -13,11 +13,11 @@ public class CustomManagerService implements ManagerService {
     private RestService restService;
 
     @Override
-    public void process(Integer channelId, String text, String name) {
+    public void process(Long channelId, String text, String name) {
         if (CommandsUtils.isServerCommand(text)) {
             restService.process(channelId, text, name);
         } else {
-            massageService.process(text, name);
+            massageService.process(channelId, text, name);
         }
     }
 }

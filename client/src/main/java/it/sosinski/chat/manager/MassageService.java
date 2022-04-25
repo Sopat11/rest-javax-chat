@@ -2,5 +2,5 @@ package it.sosinski.chat.manager;
 
 public interface MassageService {
 
-    void process(String text, String name);
+    void process(Long channelId, String text, String name);
 }

@@ -13,9 +13,9 @@ public class MsgListener implements Runnable {
     private static final String CONNECTION_FACTORY_JNDI_NAME = "jms/RemoteConnectionFactory";
     private static final String MESSAGES_TOPIC_JNDI_NAME = "jms/topic/Messages";
 
-    private Integer channelId;
+    private Long channelId;
 
-    public MsgListener(Integer channelId) {
+    public MsgListener(Long channelId) {
         this.channelId = channelId;
     }
 

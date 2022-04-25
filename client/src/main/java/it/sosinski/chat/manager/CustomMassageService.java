@@ -18,7 +18,7 @@ public class CustomMassageService implements MassageService {
 
     @Override
     @SneakyThrows
-    public void process(String text, String name) {
+    public void process(Long channelId, String text, String name) {
 
         ProxyFactory proxyFactory = new ProxyFactory();
         ConnectionFactory connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);

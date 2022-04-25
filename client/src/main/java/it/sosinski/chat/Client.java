@@ -14,7 +14,7 @@ public class Client {
     @SneakyThrows
     public static void main(String[] args) {
         final String name = args[0];
-        Integer channelId = 0;
+        Long channelId = 0L;
 
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();

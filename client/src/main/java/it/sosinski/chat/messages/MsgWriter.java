@@ -14,9 +14,9 @@ public class MsgWriter {
 
     private final ManagerService managerService;
 
-    private Integer channelId;
+    private Long channelId;
 
-    public MsgWriter(ManagerService managerService, Integer channelId) {
+    public MsgWriter(ManagerService managerService, Long channelId) {
         this.managerService = managerService;
         this.channelId = channelId;
     }
