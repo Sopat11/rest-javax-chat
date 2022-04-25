@@ -1,28 +1,33 @@
 package it.sosinski.chat.messages;
 
 import it.sosinski.chat.manager.ManagerService;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Setter
+@RequiredArgsConstructor
 public class MsgWriter {
 
-    public void write(String name) throws IOException {
+    private final ManagerService managerService;
 
-        Weld weld = new Weld();
-        WeldContainer container = weld.initialize();
-        ManagerService managerService = container.select(ManagerService.class).get();
+    private Integer channelId;
+
+    public MsgWriter(ManagerService managerService, Integer channelId) {
+        this.managerService = managerService;
+        this.channelId = channelId;
+    }
+
+    public void write(String name) throws IOException {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 
             while (true) {
                 String text = reader.readLine();
-                managerService.process(text, name);
+                managerService.process(channelId, text, name);
             }
         }
     }

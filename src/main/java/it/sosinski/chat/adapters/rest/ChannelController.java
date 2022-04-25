@@ -6,10 +6,7 @@ import lombok.Setter;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,6 +34,8 @@ public class ChannelController {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response save(@Valid NewChannelDto newChannelDto) {
         var channel = channelMapper.toDomain(newChannelDto);
         var savedChannel = channelService.save(channel);

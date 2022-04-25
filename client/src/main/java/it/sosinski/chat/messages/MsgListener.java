@@ -13,6 +13,12 @@ public class MsgListener implements Runnable {
     private static final String CONNECTION_FACTORY_JNDI_NAME = "jms/RemoteConnectionFactory";
     private static final String MESSAGES_TOPIC_JNDI_NAME = "jms/topic/Messages";
 
+    private Integer channelId;
+
+    public MsgListener(Integer channelId) {
+        this.channelId = channelId;
+    }
+
     private static final MessageListener onMessage = message -> {
         try {
             ChatMessage chatMessage = message.getBody(ChatMessage.class);
@@ -23,7 +29,6 @@ public class MsgListener implements Runnable {
     };
 
     public void run() {
-        Long channelId = 1L;
 
         ProxyFactory proxyFactory;
         ConnectionFactory connectionFactory = null;

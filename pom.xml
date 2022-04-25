@@ -16,6 +16,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <junit.version>5.8.1</junit.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <resteasy.version>4.7.3.Final</resteasy.version>
     </properties>
 
     <build>
@@ -36,10 +37,15 @@
             <version>8.0.1</version>
             <scope>provided</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.resteasy</groupId>-->
+<!--            <artifactId>resteasy-jaxb-provider</artifactId>-->
+<!--            <version>${resteasy.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxb-provider</artifactId>
-            <version>4.7.3.Final</version>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${resteasy.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
