@@ -1,6 +1,8 @@
 package it.sosinski.chat.manager;
 
+import it.sosinski.chat.commons.channel.CurrentChannel;
+
 public interface ManagerService {
 
-    void process(Long channelId, String text, String name);
+    void process(CurrentChannel currentChannel, String text, String name);
 }

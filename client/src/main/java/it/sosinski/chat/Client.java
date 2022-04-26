@@ -1,5 +1,6 @@
 package it.sosinski.chat;
 
+import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.manager.ManagerService;
 import it.sosinski.chat.messages.MsgListener;
 import it.sosinski.chat.messages.MsgWriter;
@@ -14,14 +15,14 @@ public class Client {
     @SneakyThrows
     public static void main(String[] args) {
         final String name = args[0];
-        Long channelId = 0L;
+        CurrentChannel currentChannel = new CurrentChannel();
 
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         ManagerService managerService = container.select(ManagerService.class).get();
 
-        new Thread(new MsgListener(channelId)).start();
-        new MsgWriter(managerService, channelId).write(name);
+        new Thread(new MsgListener(currentChannel)).start();
+        new MsgWriter(managerService, currentChannel).write(name);
 
         container.close();
     }

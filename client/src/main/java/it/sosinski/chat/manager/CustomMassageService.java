@@ -1,5 +1,6 @@
 package it.sosinski.chat.manager;
 
+import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.commons.message.ChatMessage;
 import it.sosinski.chat.commons.message.MessageType;
 import it.sosinski.chat.factory.ProxyFactory;
@@ -18,7 +19,7 @@ public class CustomMassageService implements MassageService {
 
     @Override
     @SneakyThrows
-    public void process(Long channelId, String text, String name) {
+    public void process(CurrentChannel currentChannel, String text, String name) {
 
         ProxyFactory proxyFactory = new ProxyFactory();
         ConnectionFactory connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);

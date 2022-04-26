@@ -3,6 +3,7 @@ package it.sosinski.chat.manager;
 import it.sosinski.chat.adapters.rest.ChannelDto;
 import it.sosinski.chat.adapters.rest.NewChannelDto;
 import it.sosinski.chat.commons.channel.ChannelType;
+import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.utils.CommandsUtils;
 import it.sosinski.chat.utils.TextUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -23,7 +24,7 @@ public class CustomRestService implements RestService {
     ResteasyWebTarget payments = restClient.target("http://localhost:8080/chat/api/channels");
 
     @Override
-    public void process(Long channelId, String text, String name) {
+    public void process(CurrentChannel currentChannel, String text, String name) {
         if (CommandsUtils.isAskingToPrintChannels(text)) {
 
             var response = payments.request()

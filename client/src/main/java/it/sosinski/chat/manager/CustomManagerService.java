@@ -1,5 +1,6 @@
 package it.sosinski.chat.manager;
 
+import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.utils.CommandsUtils;
 import jakarta.inject.Inject;
 import lombok.Setter;
@@ -13,11 +14,11 @@ public class CustomManagerService implements ManagerService {
     private RestService restService;
 
     @Override
-    public void process(Long channelId, String text, String name) {
+    public void process(CurrentChannel currentChannel, String text, String name) {
         if (CommandsUtils.isServerCommand(text)) {
-            restService.process(channelId, text, name);
+            restService.process(currentChannel, text, name);
         } else {
-            massageService.process(channelId, text, name);
+            massageService.process(currentChannel, text, name);
         }
     }
 }
