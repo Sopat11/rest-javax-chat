@@ -13,4 +13,8 @@ public class CommandsUtils {
     public static boolean isAskingToPrintChannels(String text) {
         return text.contains("--channels");
     }
+
+    public static boolean hasPrivateFlag(String text) {
+        return text.contains("--p");
+    }
 }

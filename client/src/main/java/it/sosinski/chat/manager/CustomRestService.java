@@ -2,6 +2,7 @@ package it.sosinski.chat.manager;
 
 import it.sosinski.chat.adapters.rest.ChannelDto;
 import it.sosinski.chat.adapters.rest.NewChannelDto;
+import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.utils.CommandsUtils;
 import it.sosinski.chat.utils.TextUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -32,12 +33,18 @@ public class CustomRestService implements RestService {
             List<ChannelDto> channelDtos = response.readEntity(new GenericType<>() {
             });
             channelDtos.forEach(System.out::println);
+
         } else if (CommandsUtils.isAskingToCreateChannel(text)) {
             String channelName = TextUtils.getTextFromParentheses(text);
 
             var newChannelDto = new NewChannelDto();
             newChannelDto.setName(channelName);
-            newChannelDto.setType("PUBLIC");
+
+            if (CommandsUtils.hasPrivateFlag(text)) {
+                newChannelDto.setType(ChannelType.PRIVATE.name());
+            } else {
+                newChannelDto.setType(ChannelType.PUBLIC.name());
+            }
 
             payments.request().post(Entity.entity(newChannelDto, MediaType.APPLICATION_JSON));
         }
