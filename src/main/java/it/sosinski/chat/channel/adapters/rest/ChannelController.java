@@ -66,7 +66,7 @@ public class ChannelController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{channelId}/logout/{username}")
     public Response logoutFromChannel(@PathParam("channelId") Long channelId,
-                                   @PathParam("username") String userName) {
+                                      @PathParam("username") String userName) {
 
         var channel = channelService.logoutFromChannel(channelId, userName);
         var channelDto = channelMapper.toDto(channel);
@@ -87,6 +87,27 @@ public class ChannelController {
 
     private URI getLocation(Long id) {
         return uriInfo.getAbsolutePathBuilder().path(String.valueOf(id)).build();
+    }
+
+    @PATCH
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{channelId}/allow/{username}")
+    public Response allowToChannel(@PathParam("channelId") Long channelId,
+                                   @PathParam("username") String username) {
+
+        var channel = channelService.allowToChannel(channelId, username);
+        if (channel == null) {
+            String error = "You can not allow user to the PUBLIC channel!";
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode())
+                    .entity(error)
+                    .build();
+        }
+
+        var channelDto = channelMapper.toDto(channel);
+        return Response.created(getLocation(channelDto.getId()))
+                .entity(channelDto)
+                .build();
     }
 
 }

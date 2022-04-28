@@ -13,5 +13,6 @@ public class Channel {
     String name;
     ChannelType type;
     List<String> loggedUsers;
+    List<String> allowedUsers;
 
 }

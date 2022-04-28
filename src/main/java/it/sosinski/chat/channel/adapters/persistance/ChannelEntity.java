@@ -25,6 +25,8 @@ public class ChannelEntity {
     ChannelType type;
     @ElementCollection
     List<String> loggedUsers = new ArrayList<>();
+    @ElementCollection
+    List<String> allowedUsers = new ArrayList<>();
 
     public void addLoggedUser(String username) {
         loggedUsers.add(username);
@@ -32,6 +34,14 @@ public class ChannelEntity {
 
     public void removeLoggedUser(String username) {
         loggedUsers.remove(username);
+    }
+
+    public void addAllowedUser(String username) {
+        allowedUsers.add(username);
+    }
+
+    public void removeAllowedUser(String username) {
+        allowedUsers.remove(username);
     }
 
 }

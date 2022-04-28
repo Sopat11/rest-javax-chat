@@ -12,4 +12,5 @@ public interface ChannelService {
     Channel loginToChannel(Long channelId, String username);
     Channel logoutFromChannel(Long channelId, String username);
     List<String> getLoggedUsers(Long channelId);
+    Channel allowToChannel(Long channelId, String username);
 }

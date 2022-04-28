@@ -52,4 +52,19 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     public List<String> getLoggedUsers(Long channelId) {
         return channelRepository.getLoggedUsers(channelId);
     }
+
+    @Override
+    public Channel allowToChannel(Long channelId, String username) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+        channelEntity.addAllowedUser(username);
+        ChannelEntity updatedChannelEntity = channelRepository.update(channelEntity);
+
+        return channelMapper.toDomain(updatedChannelEntity);
+    }
+
+    @Override
+    public Channel getById(Long channelId) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+        return channelMapper.toDomain(channelEntity);
+    }
 }

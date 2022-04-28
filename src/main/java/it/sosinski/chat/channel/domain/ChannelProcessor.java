@@ -40,4 +40,15 @@ public class ChannelProcessor implements ChannelService {
     public List<String> getLoggedUsers(Long channelId) {
         return channelRepository.getLoggedUsers(channelId);
     }
+
+    @Override
+    public Channel allowToChannel(Long channelId, String username) {
+        Channel channel = channelRepository.getById(channelId);
+
+        if (channel.getType() == ChannelType.PUBLIC) {
+            return null;
+        }
+
+        return channelRepository.allowToChannel(channelId, username);
+    }
 }

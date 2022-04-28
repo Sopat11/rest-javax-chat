@@ -38,4 +38,9 @@ public class DefaultChannelService implements ChannelService {
     public List<String> getLoggedUsers(Long channelId) {
         return channelService.getLoggedUsers(channelId);
     }
+
+    @Override
+    public Channel allowToChannel(Long channelId, String username) {
+        return channelService.allowToChannel(channelId, username);
+    }
 }
