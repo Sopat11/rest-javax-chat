@@ -32,7 +32,7 @@ public class ChannelProcessor implements ChannelService {
     }
 
     @Override
-    public Channel logoutFromChannel(Long channelId, String username) {
+    public boolean logoutFromChannel(Long channelId, String username) {
         return channelRepository.logoutFromChannel(channelId, username);
     }
 

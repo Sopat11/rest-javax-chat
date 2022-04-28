@@ -41,12 +41,15 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     }
 
     @Override
-    public Channel logoutFromChannel(Long channelId, String username) {
+    public boolean logoutFromChannel(Long channelId, String username) {
         ChannelEntity channelEntity = channelRepository.findById(channelId);
-        channelEntity.removeLoggedUser(username);
-        ChannelEntity updatedChannelEntity = channelRepository.update(channelEntity);
+        boolean isPresent = channelEntity.getLoggedUsers().stream().anyMatch(x -> x.equals(username));
+        if (isPresent) {
+            channelEntity.removeLoggedUser(username);
+            channelRepository.update(channelEntity);
+        }
 
-        return channelMapper.toDomain(updatedChannelEntity);
+        return isPresent;
     }
 
     @Override

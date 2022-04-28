@@ -68,11 +68,16 @@ public class ChannelController {
     public Response logoutFromChannel(@PathParam("channelId") Long channelId,
                                       @PathParam("username") String userName) {
 
-        var channel = channelService.logoutFromChannel(channelId, userName);
-        var channelDto = channelMapper.toDto(channel);
-        return Response.created(getLocation(channelDto.getId()))
-                .entity(channelDto)
-                .build();
+        boolean success = channelService.logoutFromChannel(channelId, userName);
+        if (success) {
+            return Response.ok()
+                    .entity("You successfully logged out from channel.")
+                    .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode())
+                    .entity("You are not already logged to given channel!")
+                    .build();
+        }
     }
 
     @GET
