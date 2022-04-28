@@ -30,4 +30,9 @@ public class ChannelProcessor implements ChannelService {
     public Channel loginToChannel(Long channelId, String username) {
         return channelRepository.loginToChannel(channelId, username);
     }
+
+    @Override
+    public Channel logoutFromChannel(Long channelId, String username) {
+        return channelRepository.logoutFromChannel(channelId, username);
+    }
 }

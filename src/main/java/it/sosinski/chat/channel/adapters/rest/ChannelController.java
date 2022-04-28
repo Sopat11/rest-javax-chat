@@ -1,7 +1,6 @@
 package it.sosinski.chat.channel.adapters.rest;
 
 import it.sosinski.chat.channel.adapters.Basic;
-import it.sosinski.chat.channel.domain.Channel;
 import it.sosinski.chat.channel.ports.ChannelService;
 import lombok.Setter;
 
@@ -54,7 +53,21 @@ public class ChannelController {
                                    @PathParam("username") String userName) {
 
         //TODO: Sprawdzić, czy jest allowed dla kanału prywatnego
-        Channel channel = channelService.loginToChannel(channelId, userName);
+        var channel = channelService.loginToChannel(channelId, userName);
+        var channelDto = channelMapper.toDto(channel);
+        return Response.created(getLocation(channelDto.getId()))
+                .entity(channelDto)
+                .build();
+    }
+
+    @PATCH
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{channelId}/logout/{username}")
+    public Response logoutFromChannel(@PathParam("channelId") Long channelId,
+                                   @PathParam("username") String userName) {
+
+        var channel = channelService.logoutFromChannel(channelId, userName);
         var channelDto = channelMapper.toDto(channel);
         return Response.created(getLocation(channelDto.getId()))
                 .entity(channelDto)

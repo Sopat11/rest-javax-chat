@@ -38,4 +38,13 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
 
         return channelMapper.toDomain(updatedChannelEntity);
     }
+
+    @Override
+    public Channel logoutFromChannel(Long channelId, String username) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+        channelEntity.removeLoggedUser(username);
+        ChannelEntity updatedChannelEntity = channelRepository.update(channelEntity);
+
+        return channelMapper.toDomain(updatedChannelEntity);
+    }
 }

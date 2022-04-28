@@ -28,4 +28,9 @@ public class DefaultChannelService implements ChannelService {
     public Channel loginToChannel(Long channelId, String username) {
         return channelService.loginToChannel(channelId, username);
     }
+
+    @Override
+    public Channel logoutFromChannel(Long channelId, String username) {
+        return channelService.logoutFromChannel(channelId, username);
+    }
 }

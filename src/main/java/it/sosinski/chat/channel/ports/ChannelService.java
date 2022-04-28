@@ -10,4 +10,5 @@ public interface ChannelService {
     List<Channel> getAll();
     Channel save(NewChannel newChannel);
     Channel loginToChannel(Long channelId, String username);
+    Channel logoutFromChannel(Long channelId, String username);
 }
