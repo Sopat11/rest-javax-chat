@@ -110,4 +110,24 @@ public class ChannelController {
                 .build();
     }
 
+    @PATCH
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{channelId}/revoke/{username}")
+    public Response revokeAccessFromChannelFromChannel(@PathParam("channelId") Long channelId,
+                                    @PathParam("username") String username) {
+
+        boolean success = channelService.revokeAccessFromChannelFromChannel(channelId, username);
+
+        if (success) {
+            return Response.ok()
+                    .entity("Access to the channel for user " + username + " revoked.")
+                    .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode())
+                    .entity("User " + username + " is not already allowed to the channel.")
+                    .build();
+        }
+    }
+
 }

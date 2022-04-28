@@ -43,4 +43,9 @@ public class DefaultChannelService implements ChannelService {
     public Channel allowToChannel(Long channelId, String username) {
         return channelService.allowToChannel(channelId, username);
     }
+
+    @Override
+    public boolean revokeAccessFromChannelFromChannel(Long channelId, String username) {
+        return channelService.revokeAccessFromChannelFromChannel(channelId, username);
+    }
 }

@@ -51,4 +51,9 @@ public class ChannelProcessor implements ChannelService {
 
         return channelRepository.allowToChannel(channelId, username);
     }
+
+    @Override
+    public boolean revokeAccessFromChannelFromChannel(Long channelId, String username) {
+        return channelRepository.revokeAccessFromChannel(channelId, username);
+    }
 }

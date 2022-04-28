@@ -63,6 +63,18 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     }
 
     @Override
+    public boolean revokeAccessFromChannel(Long channelId, String username) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+        boolean isPresent = channelEntity.getAllowedUsers().stream().anyMatch(x -> x.equals(username));
+        if (isPresent) {
+            channelEntity.removeAllowedUser(username);
+            channelRepository.update(channelEntity);
+        }
+
+        return isPresent;
+    }
+
+    @Override
     public Channel getById(Long channelId) {
         ChannelEntity channelEntity = channelRepository.findById(channelId);
         return channelMapper.toDomain(channelEntity);

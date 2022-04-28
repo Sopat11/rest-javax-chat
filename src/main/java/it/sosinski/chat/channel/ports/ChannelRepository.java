@@ -19,4 +19,6 @@ public interface ChannelRepository {
     Channel allowToChannel(Long channelId, String username);
 
     Channel getById(Long channelId);
+
+    boolean revokeAccessFromChannel(Long channelId, String username);
 }
