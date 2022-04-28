@@ -68,7 +68,7 @@ public class ChannelController {
     public Response logoutFromChannel(@PathParam("channelId") Long channelId,
                                       @PathParam("username") String userName) {
 
-        boolean success = channelService.logoutFromChannel(channelId, userName);
+        var success = channelService.logoutFromChannel(channelId, userName);
         if (success) {
             return Response.ok()
                     .entity("You successfully logged out from channel.")
@@ -121,7 +121,7 @@ public class ChannelController {
     public Response revokeAccessFromChannelFromChannel(@PathParam("channelId") Long channelId,
                                                        @PathParam("username") String username) {
 
-        boolean success = channelService.revokeAccessFromChannelFromChannel(channelId, username);
+        var success = channelService.revokeAccessFromChannelFromChannel(channelId, username);
 
         if (success) {
             return Response.ok()
