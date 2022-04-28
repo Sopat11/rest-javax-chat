@@ -16,10 +16,12 @@ public class ChatMessage implements Serializable {
     @Serial
     private static final long serialVersionUID = 5010870004057592025L;
 
+    private Long id;
     private String sender;
     private LocalDateTime dateTime;
     private MessageType type;
     private String text;
+    private Long channelId;
 
     @Override
     public String toString() {
