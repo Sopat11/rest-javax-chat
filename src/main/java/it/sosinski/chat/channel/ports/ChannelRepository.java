@@ -9,4 +9,6 @@ public interface ChannelRepository {
     Channel save(Channel channel);
 
     List<Channel> getAll();
+
+    Channel loginToChannel(Long channelId, String username);
 }

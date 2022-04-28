@@ -25,4 +25,9 @@ public class ChannelProcessor implements ChannelService {
 
         return channelRepository.save(channel);
     }
+
+    @Override
+    public Channel loginToChannel(Long channelId, String username) {
+        return channelRepository.loginToChannel(channelId, username);
+    }
 }

@@ -29,4 +29,13 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
         var channels = channelRepository.getAll();
         return channels.stream().map(channelMapper::toDomain).toList();
     }
+
+    @Override
+    public Channel loginToChannel(Long channelId, String username) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+        channelEntity.addLoggedUser(username);
+        ChannelEntity updatedChannelEntity = channelRepository.update(channelEntity);
+
+        return channelMapper.toDomain(updatedChannelEntity);
+    }
 }

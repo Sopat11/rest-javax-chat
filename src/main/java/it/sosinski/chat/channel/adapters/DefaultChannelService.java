@@ -23,4 +23,9 @@ public class DefaultChannelService implements ChannelService {
     public Channel save(NewChannel newChannel) {
         return channelService.save(newChannel);
     }
+
+    @Override
+    public Channel loginToChannel(Long channelId, String username) {
+        return channelService.loginToChannel(channelId, username);
+    }
 }

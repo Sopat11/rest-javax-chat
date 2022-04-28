@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NamedQuery(name = ChannelEntity.GET_ALL, query = "select ch from Channel ch")
 @Entity(name = "Channel")
@@ -19,5 +21,15 @@ public class ChannelEntity {
     Long id;
     String name;
     ChannelType type;
+    @ElementCollection
+    List<String> loggedUsers = new ArrayList<>();
+
+    public void addLoggedUser(String username) {
+        loggedUsers.add(username);
+    }
+
+    public void removeLoggedUser(String username) {
+        loggedUsers.remove(username);
+    }
 
 }

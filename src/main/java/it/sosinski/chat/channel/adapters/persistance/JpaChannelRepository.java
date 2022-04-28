@@ -16,9 +16,18 @@ public class JpaChannelRepository {
         return channelEntity;
     }
 
+    public ChannelEntity update(ChannelEntity channelEntity) {
+        ChannelEntity mergedChannelEntity = entityManager.merge(channelEntity);
+        return mergedChannelEntity;
+    }
+
     public List<ChannelEntity> getAll() {
         var result = entityManager.createNamedQuery(ChannelEntity.GET_ALL, ChannelEntity.class)
                 .getResultList();
         return result;
+    }
+
+    public ChannelEntity findById(Long channelId) {
+        return entityManager.find(ChannelEntity.class, channelId);
     }
 }
