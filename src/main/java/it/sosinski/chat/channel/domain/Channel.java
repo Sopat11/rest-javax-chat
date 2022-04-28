@@ -1,4 +1,4 @@
-package it.sosinski.chat.channel.domain.channel;
+package it.sosinski.chat.channel.domain;
 
 import lombok.Builder;
 import lombok.Value;

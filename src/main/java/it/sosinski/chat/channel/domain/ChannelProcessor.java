@@ -1,7 +1,7 @@
-package it.sosinski.chat.channel.domain.channel;
+package it.sosinski.chat.channel.domain;
 
-import it.sosinski.chat.channel.domain.ports.ChannelRepository;
-import it.sosinski.chat.channel.domain.ports.ChannelService;
+import it.sosinski.chat.channel.ports.ChannelRepository;
+import it.sosinski.chat.channel.ports.ChannelService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

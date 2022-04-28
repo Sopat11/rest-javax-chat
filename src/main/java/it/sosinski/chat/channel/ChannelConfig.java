@@ -1,9 +1,9 @@
-package it.sosinski.chat.channel.domain;
+package it.sosinski.chat.channel;
 
-import it.sosinski.chat.channel.domain.channel.BasicChannelFactory;
-import it.sosinski.chat.channel.domain.ports.ChannelFactory;
-import it.sosinski.chat.channel.domain.ports.ChannelRepository;
-import it.sosinski.chat.channel.domain.ports.ChannelService;
+import it.sosinski.chat.channel.domain.BasicChannelFactory;
+import it.sosinski.chat.channel.ports.ChannelFactory;
+import it.sosinski.chat.channel.ports.ChannelRepository;
+import it.sosinski.chat.channel.ports.ChannelService;
 
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;

@@ -1,6 +1,6 @@
 package it.sosinski.chat.channel.commons.validator;
 
-import it.sosinski.chat.channel.domain.channel.ChannelType;
+import it.sosinski.chat.channel.domain.ChannelType;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

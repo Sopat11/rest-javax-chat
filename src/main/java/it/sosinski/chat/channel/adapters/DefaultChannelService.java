@@ -1,8 +1,8 @@
 package it.sosinski.chat.channel.adapters;
 
-import it.sosinski.chat.channel.domain.channel.Channel;
-import it.sosinski.chat.channel.domain.channel.NewChannel;
-import it.sosinski.chat.channel.domain.ports.ChannelService;
+import it.sosinski.chat.channel.domain.Channel;
+import it.sosinski.chat.channel.domain.NewChannel;
+import it.sosinski.chat.channel.ports.ChannelService;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Inject;

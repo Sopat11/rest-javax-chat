@@ -1,6 +1,6 @@
-package it.sosinski.chat.channel.domain.ports;
+package it.sosinski.chat.channel.ports;
 
-import it.sosinski.chat.channel.domain.channel.Channel;
+import it.sosinski.chat.channel.domain.Channel;
 
 import java.util.List;
 

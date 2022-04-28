@@ -1,6 +1,6 @@
 package it.sosinski.chat.channel.adapters.persistance;
 
-import it.sosinski.chat.channel.domain.channel.ChannelType;
+import it.sosinski.chat.channel.domain.ChannelType;
 import lombok.Getter;
 import lombok.Setter;
 

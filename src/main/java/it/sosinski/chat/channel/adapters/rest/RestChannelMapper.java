@@ -1,7 +1,7 @@
 package it.sosinski.chat.channel.adapters.rest;
 
-import it.sosinski.chat.channel.domain.channel.Channel;
-import it.sosinski.chat.channel.domain.channel.NewChannel;
+import it.sosinski.chat.channel.domain.Channel;
+import it.sosinski.chat.channel.domain.NewChannel;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 

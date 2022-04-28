@@ -1,4 +1,4 @@
-package it.sosinski.chat.channel.domain.ports;
+package it.sosinski.chat.channel.ports;
 
 public interface ChannelFactory {
 
