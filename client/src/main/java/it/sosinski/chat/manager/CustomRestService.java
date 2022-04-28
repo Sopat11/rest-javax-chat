@@ -1,7 +1,7 @@
 package it.sosinski.chat.manager;
 
-import it.sosinski.chat.adapters.rest.ChannelDto;
-import it.sosinski.chat.adapters.rest.NewChannelDto;
+import it.sosinski.chat.channel.adapters.rest.ChannelDto;
+import it.sosinski.chat.channel.adapters.rest.NewChannelDto;
 import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.utils.CommandsUtils;
