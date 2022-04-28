@@ -96,18 +96,17 @@ public class ChannelController {
     public Response allowToChannel(@PathParam("channelId") Long channelId,
                                    @PathParam("username") String username) {
 
-        var channel = channelService.allowToChannel(channelId, username);
-        if (channel == null) {
-            String error = "You can not allow user to the PUBLIC channel!";
+        var success = channelService.allowToChannel(channelId, username);
+
+        if (success) {
+            return Response.ok()
+                    .entity("Access to the channel for user " + username + " added.")
+                    .build();
+        } else {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode())
-                    .entity(error)
+                    .entity("You can not allow user to the PUBLIC channel!")
                     .build();
         }
-
-        var channelDto = channelMapper.toDto(channel);
-        return Response.created(getLocation(channelDto.getId()))
-                .entity(channelDto)
-                .build();
     }
 
     @PATCH
@@ -115,7 +114,7 @@ public class ChannelController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{channelId}/revoke/{username}")
     public Response revokeAccessFromChannelFromChannel(@PathParam("channelId") Long channelId,
-                                    @PathParam("username") String username) {
+                                                       @PathParam("username") String username) {
 
         boolean success = channelService.revokeAccessFromChannelFromChannel(channelId, username);
 

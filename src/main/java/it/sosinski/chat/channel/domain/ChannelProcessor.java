@@ -42,13 +42,7 @@ public class ChannelProcessor implements ChannelService {
     }
 
     @Override
-    public Channel allowToChannel(Long channelId, String username) {
-        Channel channel = channelRepository.getById(channelId);
-
-        if (channel.getType() == ChannelType.PUBLIC) {
-            return null;
-        }
-
+    public boolean allowToChannel(Long channelId, String username) {
         return channelRepository.allowToChannel(channelId, username);
     }
 

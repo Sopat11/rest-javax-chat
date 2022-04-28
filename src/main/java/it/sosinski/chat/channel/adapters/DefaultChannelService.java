@@ -40,7 +40,7 @@ public class DefaultChannelService implements ChannelService {
     }
 
     @Override
-    public Channel allowToChannel(Long channelId, String username) {
+    public boolean allowToChannel(Long channelId, String username) {
         return channelService.allowToChannel(channelId, username);
     }
 

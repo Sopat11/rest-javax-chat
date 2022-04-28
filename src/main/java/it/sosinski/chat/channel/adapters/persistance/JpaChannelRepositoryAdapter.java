@@ -1,6 +1,7 @@
 package it.sosinski.chat.channel.adapters.persistance;
 
 import it.sosinski.chat.channel.domain.Channel;
+import it.sosinski.chat.channel.domain.ChannelType;
 import it.sosinski.chat.channel.ports.ChannelRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -54,12 +55,16 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     }
 
     @Override
-    public Channel allowToChannel(Long channelId, String username) {
+    public boolean allowToChannel(Long channelId, String username) {
         ChannelEntity channelEntity = channelRepository.findById(channelId);
-        channelEntity.addAllowedUser(username);
-        ChannelEntity updatedChannelEntity = channelRepository.update(channelEntity);
+        boolean isPrivate = channelEntity.getType() == ChannelType.PRIVATE;
 
-        return channelMapper.toDomain(updatedChannelEntity);
+        if (isPrivate) {
+            channelEntity.addAllowedUser(username);
+            channelRepository.update(channelEntity);
+        }
+
+        return isPrivate;
     }
 
     @Override

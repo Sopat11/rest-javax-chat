@@ -16,7 +16,7 @@ public interface ChannelRepository {
 
     List<String> getLoggedUsers(Long channelId);
 
-    Channel allowToChannel(Long channelId, String username);
+    boolean allowToChannel(Long channelId, String username);
 
     Channel getById(Long channelId);
 
