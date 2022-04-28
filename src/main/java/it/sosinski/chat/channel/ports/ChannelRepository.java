@@ -13,4 +13,6 @@ public interface ChannelRepository {
     Channel loginToChannel(Long channelId, String username);
 
     Channel logoutFromChannel(Long channelId, String username);
+
+    List<String> getLoggedUsers(Long channelId);
 }

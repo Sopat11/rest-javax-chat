@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
 
 @Path("channels")
 @Setter
@@ -74,7 +75,18 @@ public class ChannelController {
                 .build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{channelId}/users")
+    public Response getLoggedUsers(@PathParam("channelId") Long channelId) {
+
+        List<String> users = channelService.getLoggedUsers(channelId);
+
+        return Response.ok(users).build();
+    }
+
     private URI getLocation(Long id) {
         return uriInfo.getAbsolutePathBuilder().path(String.valueOf(id)).build();
     }
+
 }

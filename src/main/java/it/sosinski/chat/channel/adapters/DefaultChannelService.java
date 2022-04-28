@@ -33,4 +33,9 @@ public class DefaultChannelService implements ChannelService {
     public Channel logoutFromChannel(Long channelId, String username) {
         return channelService.logoutFromChannel(channelId, username);
     }
+
+    @Override
+    public List<String> getLoggedUsers(Long channelId) {
+        return channelService.getLoggedUsers(channelId);
+    }
 }

@@ -47,4 +47,9 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
 
         return channelMapper.toDomain(updatedChannelEntity);
     }
+
+    @Override
+    public List<String> getLoggedUsers(Long channelId) {
+        return channelRepository.getLoggedUsers(channelId);
+    }
 }

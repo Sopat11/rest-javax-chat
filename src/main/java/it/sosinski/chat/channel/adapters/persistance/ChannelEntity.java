@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NamedQuery(name = ChannelEntity.GET_ALL, query = "select ch from Channel ch")
+@NamedQuery(name = ChannelEntity.GET_LOGGED_USERS, query = "select ch from Channel ch join fetch ch.loggedUsers  where ch.id =: channelId")
 @Entity(name = "Channel")
 @Getter
 @Setter
 public class ChannelEntity {
 
     public static final String GET_ALL = "channelGetAll";
+    public static final String GET_LOGGED_USERS = "channelGetLoggedUsers";
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

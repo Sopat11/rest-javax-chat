@@ -22,12 +22,20 @@ public class JpaChannelRepository {
     }
 
     public List<ChannelEntity> getAll() {
-        var result = entityManager.createNamedQuery(ChannelEntity.GET_ALL, ChannelEntity.class)
+        var channelEntities = entityManager.createNamedQuery(ChannelEntity.GET_ALL, ChannelEntity.class)
                 .getResultList();
-        return result;
+        return channelEntities;
     }
 
     public ChannelEntity findById(Long channelId) {
         return entityManager.find(ChannelEntity.class, channelId);
+    }
+
+    public List<String> getLoggedUsers(Long channelId) {
+         var channelEntity = entityManager.createNamedQuery(ChannelEntity.GET_LOGGED_USERS, ChannelEntity.class)
+                .setParameter("channelId", channelId)
+                .getSingleResult();
+
+        return channelEntity.getLoggedUsers();
     }
 }
