@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Singleton
@@ -21,5 +23,13 @@ public class JpaChatMessageRepositoryAdapter implements ChatMessageRepository {
         var chatMessageEntity = chatMessageMapper.toEntity(chatMessage);
         var savedEntity = chatMessageRepository.save(chatMessageEntity);
         return chatMessageMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public List<ChatMessage> getHistory(Long channelId) {
+        List<ChatMessageEntity> chatMessageEntities = chatMessageRepository.getHistory(channelId);
+        return chatMessageEntities.stream()
+                .map(chatMessageMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

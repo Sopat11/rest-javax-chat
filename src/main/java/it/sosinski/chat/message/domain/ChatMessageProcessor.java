@@ -5,6 +5,8 @@ import it.sosinski.chat.message.ports.ChatMessageRepository;
 import it.sosinski.chat.message.ports.ChatMessageService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class ChatMessageProcessor implements ChatMessageService {
 
@@ -13,5 +15,10 @@ public class ChatMessageProcessor implements ChatMessageService {
     @Override
     public ChatMessage save(ChatMessage chatMessage) {
         return chatMessageRepository.save(chatMessage);
+    }
+
+    @Override
+    public List<ChatMessage> getHistory(Long channelId) {
+        return chatMessageRepository.getHistory(channelId);
     }
 }

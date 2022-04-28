@@ -4,16 +4,16 @@ import it.sosinski.chat.commons.message.MessageType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NamedQuery(name = ChatMessageEntity.GET_HISTORY, query = "select cht FROM ChatMessage cht where cht.channelId =: channelId order by cht.dateTime asc")
 @Entity(name = "ChatMessage")
 @Getter
 @Setter
 public class ChatMessageEntity {
+
+    public static final String GET_HISTORY = "chatMessagesGetHistory";
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
