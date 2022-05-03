@@ -9,7 +9,7 @@ public interface ChannelService {
 
     List<Channel> getAll();
     Channel save(NewChannel newChannel);
-    Channel loginToChannel(Long channelId, String username);
+    boolean loginToChannel(Long channelId, String username);
     boolean logoutFromChannel(Long channelId, String username);
     List<String> getLoggedUsers(Long channelId);
     boolean allowToChannel(Long channelId, String username);

@@ -25,7 +25,7 @@ public class DefaultChannelService implements ChannelService {
     }
 
     @Override
-    public Channel loginToChannel(Long channelId, String username) {
+    public boolean loginToChannel(Long channelId, String username) {
         return channelService.loginToChannel(channelId, username);
     }
 

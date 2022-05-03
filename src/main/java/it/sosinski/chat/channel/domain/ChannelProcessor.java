@@ -27,8 +27,13 @@ public class ChannelProcessor implements ChannelService {
     }
 
     @Override
-    public Channel loginToChannel(Long channelId, String username) {
-        return channelRepository.loginToChannel(channelId, username);
+    public boolean loginToChannel(Long channelId, String username) {
+        boolean isAllowed = channelRepository.isAllowed(channelId, username);
+
+        if (isAllowed) {
+            channelRepository.loginToChannel(channelId, username);
+        }
+        return isAllowed;
     }
 
     @Override
