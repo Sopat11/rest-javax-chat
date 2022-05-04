@@ -63,11 +63,16 @@ public class CustomRestService implements RestService {
             }
             String channelId = TextUtils.getTextFromParentheses(text);
 
-            channels.path("/" + channelId + "/login/" + name)
+            Response response = channels.path("/" + channelId + "/login/" + name)
                     .request()
                     .method("PATCH");
 
-            currentChannel.setId(Long.valueOf(channelId));
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                currentChannel.setId(Long.valueOf(channelId));
+            } else {
+                log.severe("You're not allowed to join this channel!");
+            }
+
         } else if (CommandsUtils.isAskingToLeaveChannel(text)) {
             Long channelId = currentChannel.getId();
 
