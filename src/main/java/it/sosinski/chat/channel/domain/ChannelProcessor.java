@@ -17,18 +17,30 @@ public class ChannelProcessor implements ChannelService {
     }
 
     @Override
-    public Channel save(NewChannel newChannel) {
+    public Channel create(NewChannel newChannel) {
+        var username = newChannel.getCreator();
         var channel = Channel.builder()
                 .name(newChannel.getName())
                 .type(newChannel.getType())
                 .build();
 
+        channel.addLoggedUser(username);
+
+        if (channel.getType() == ChannelType.PRIVATE) {
+            channel.addAllowedUser(username);
+        }
+
         return channelRepository.save(channel);
     }
 
     @Override
-    public Channel loginToChannel(Long channelId, String username) {
-        return channelRepository.loginToChannel(channelId, username);
+    public boolean loginToChannel(Long channelId, String username) {
+        boolean isAllowed = channelRepository.isAllowed(channelId, username);
+
+        if (isAllowed) {
+            channelRepository.loginToChannel(channelId, username);
+        }
+        return isAllowed;
     }
 
     @Override

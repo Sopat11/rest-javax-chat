@@ -37,10 +37,11 @@ public class ChannelController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response save(@Valid NewChannelDto newChannelDto) {
+    public Response create(@Valid NewChannelDto newChannelDto) {
         var channel = channelMapper.toDomain(newChannelDto);
-        var savedChannel = channelService.save(channel);
+        var savedChannel = channelService.create(channel);
         var channelDto = channelMapper.toDto(savedChannel);
+
         return Response.created(getLocation(channelDto.getId()))
                 .entity(channelDto)
                 .build();
@@ -53,12 +54,17 @@ public class ChannelController {
     public Response loginToChannel(@PathParam("channelId") Long channelId,
                                    @PathParam("username") String userName) {
 
-        //TODO: Sprawdzić, czy jest allowed dla kanału prywatnego
-        var channel = channelService.loginToChannel(channelId, userName);
-        var channelDto = channelMapper.toDto(channel);
-        return Response.created(getLocation(channelDto.getId()))
-                .entity(channelDto)
-                .build();
+        var success = channelService.loginToChannel(channelId, userName);
+
+        if (success) {
+            return Response.ok()
+                    .entity("You successfully logged in to the channel.")
+                    .build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode())
+                    .entity("You are not allowed to this channel!")
+                    .build();
+        }
     }
 
     @PATCH

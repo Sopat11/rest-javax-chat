@@ -18,10 +18,12 @@ public class ChatMessage implements Serializable {
 
     private Long id;
     private String sender;
-    private LocalDateTime dateTime;
+    private final LocalDateTime dateTime = LocalDateTime.now();
     private MessageType type;
     private String text;
     private Long channelId;
+    private String fileName;
+    private byte[] fileBytes;
 
     @Override
     public String toString() {

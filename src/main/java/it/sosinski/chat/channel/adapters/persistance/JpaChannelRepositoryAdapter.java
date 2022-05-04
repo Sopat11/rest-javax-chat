@@ -83,6 +83,17 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     }
 
     @Override
+    public boolean isAllowed(Long channelId, String username) {
+        ChannelEntity channelEntity = channelRepository.findById(channelId);
+
+        if (channelEntity.getType() == ChannelType.PRIVATE) {
+            return channelEntity.allowedUsers.contains(username);
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public Channel getById(Long channelId) {
         ChannelEntity channelEntity = channelRepository.findById(channelId);
         return channelMapper.toDomain(channelEntity);

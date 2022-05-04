@@ -2,8 +2,8 @@ package it.sosinski.chat;
 
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.manager.ManagerService;
-import it.sosinski.chat.messages.MsgListener;
-import it.sosinski.chat.messages.MsgWriter;
+import it.sosinski.chat.message.MsgListener;
+import it.sosinski.chat.message.MsgWriter;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.jboss.weld.environment.se.Weld;
