@@ -68,6 +68,14 @@ public class CustomRestService implements RestService {
                     .method("PATCH");
 
             currentChannel.setId(Long.valueOf(channelId));
+        } else if (CommandsUtils.isAskingToLeaveChannel(text)) {
+            Long channelId = currentChannel.getId();
+
+            channels.path("/" + channelId + "/logout/" + name)
+                    .request()
+                    .method("PATCH");
+
+            currentChannel.setId(null);
         } else {
             log.severe("No such command!");
         }

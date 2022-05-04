@@ -21,4 +21,8 @@ public class CommandsUtils {
     public static boolean isAskingToJoinChannel(String text) {
         return text.contains("--join");
     }
+
+    public static boolean isAskingToLeaveChannel(String text) {
+        return text.contains("--leave");
+    }
 }
