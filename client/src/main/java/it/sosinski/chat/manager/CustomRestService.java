@@ -76,7 +76,7 @@ public class CustomRestService implements RestService {
                     .method("PATCH");
 
             currentChannel.setId(null);
-        } else if (CommandsUtils.isAskingForLoggedChatWorkers(text)) {
+        } else if (CommandsUtils.isAskingForLoggedUsers(text)) {
             Long channelId = currentChannel.getId();
 
             if (channelId == null) {

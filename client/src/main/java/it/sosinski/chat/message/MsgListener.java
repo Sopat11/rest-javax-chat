@@ -1,4 +1,4 @@
-package it.sosinski.chat.messages;
+package it.sosinski.chat.message;
 
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.commons.message.ChatMessage;
