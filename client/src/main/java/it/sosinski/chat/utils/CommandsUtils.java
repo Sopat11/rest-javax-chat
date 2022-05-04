@@ -25,4 +25,8 @@ public class CommandsUtils {
     public static boolean isAskingToLeaveChannel(String text) {
         return text.contains("--leave");
     }
+
+    public static boolean isAskingForLoggedChatWorkers(String text) {
+        return text.contains("--online");
+    }
 }

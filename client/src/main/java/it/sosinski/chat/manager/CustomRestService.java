@@ -76,6 +76,21 @@ public class CustomRestService implements RestService {
                     .method("PATCH");
 
             currentChannel.setId(null);
+        } else if (CommandsUtils.isAskingForLoggedChatWorkers(text)) {
+            Long channelId = currentChannel.getId();
+
+            if (channelId == null) {
+                log.severe("You need to connect to a channel!");
+                return;
+            }
+            Response response = channels.path("/" + channelId + "/users")
+                    .request()
+                    .get();
+
+            List<String> loggedUsers = response.readEntity(new GenericType<>() {
+            });
+            loggedUsers.forEach(System.out::println);
+
         } else {
             log.severe("No such command!");
         }
