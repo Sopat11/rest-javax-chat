@@ -33,6 +33,12 @@ public class CustomMassageService implements MassageService {
         ChatMessage chatMessage;
 
         if (!text.startsWith("\\f")) {
+
+            if (currentChannel.getId() == null) {
+                log.severe("You need to connect to a channel!");
+                return;
+            }
+
             chatMessage = ChatMessage.builder()
                     .sender(name)
                     .channelId(currentChannel.getId())
