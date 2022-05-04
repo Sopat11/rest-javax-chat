@@ -5,6 +5,7 @@ import it.sosinski.chat.channel.adapters.rest.NewChannelDto;
 import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.utils.CommandsUtils;
+import it.sosinski.chat.utils.ServerPrinter;
 import it.sosinski.chat.utils.TextUtils;
 import lombok.extern.java.Log;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -58,7 +59,7 @@ public class CustomRestService implements RestService {
             currentChannel.setId(channelDto.getId());
         } else if (CommandsUtils.isAskingToJoinChannel(text)) {
             if (!TextUtils.hasTwoParentheses(text)) {
-                log.severe("You need to give a channel id!");
+                ServerPrinter.print("You need to give a channel id!");
                 return;
             }
             String channelId = TextUtils.getTextFromParentheses(text);
@@ -70,7 +71,7 @@ public class CustomRestService implements RestService {
             if (response.getStatus() == Response.Status.OK.getStatusCode()) {
                 currentChannel.setId(Long.valueOf(channelId));
             } else {
-                log.severe("You're not allowed to join this channel!");
+                ServerPrinter.print("You're not allowed to join this channel!");
             }
 
         } else if (CommandsUtils.isAskingToLeaveChannel(text)) {
@@ -85,7 +86,7 @@ public class CustomRestService implements RestService {
             Long channelId = currentChannel.getId();
 
             if (channelId == null) {
-                log.severe("You need to connect to a channel!");
+                ServerPrinter.print("You need to connect to a channel!");
                 return;
             }
             Response response = channels.path("/" + channelId + "/users")
@@ -97,7 +98,7 @@ public class CustomRestService implements RestService {
             loggedUsers.forEach(System.out::println);
 
         } else {
-            log.severe("No such command!");
+            ServerPrinter.print("No such command!");
         }
     }
 }

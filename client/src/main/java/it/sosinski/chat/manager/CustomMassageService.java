@@ -5,6 +5,7 @@ import it.sosinski.chat.commons.message.ChatMessage;
 import it.sosinski.chat.commons.message.MessageType;
 import it.sosinski.chat.factory.ProxyFactory;
 import it.sosinski.chat.utils.FileUtils;
+import it.sosinski.chat.utils.ServerPrinter;
 import it.sosinski.chat.utils.TextUtils;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
@@ -35,7 +36,7 @@ public class CustomMassageService implements MassageService {
         if (!text.startsWith("\\f")) {
 
             if (currentChannel.getId() == null) {
-                log.severe("You need to connect to a channel!");
+                ServerPrinter.print("You need to connect to a channel!");
                 return;
             }
 
@@ -47,7 +48,7 @@ public class CustomMassageService implements MassageService {
                     .build();
         } else {
             if (!TextUtils.hasTwoParentheses(text)) {
-                log.severe("You need to give a filepath!");
+                ServerPrinter.print("You need to give a filepath!");
                 return;
             }
             String filePath = TextUtils.getTextFromParentheses(text);
