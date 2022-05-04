@@ -14,6 +14,7 @@ import org.jboss.resteasy.plugins.providers.jackson.Jackson2JsonpInterceptor;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class CustomRestService implements RestService {
@@ -21,13 +22,13 @@ public class CustomRestService implements RestService {
     ResteasyClient restClient = new ResteasyClientBuilderImpl()
             .register(Jackson2JsonpInterceptor.class)
             .build();
-    ResteasyWebTarget payments = restClient.target("http://localhost:8080/chat/api/channels");
+    ResteasyWebTarget channels = restClient.target("http://localhost:8080/chat/api/channels");
 
     @Override
     public void process(CurrentChannel currentChannel, String text, String name) {
         if (CommandsUtils.isAskingToPrintChannels(text)) {
 
-            var response = payments.request()
+            var response = channels.request()
                     .accept(MediaType.APPLICATION_JSON_TYPE)
                     .get();
 
@@ -40,6 +41,7 @@ public class CustomRestService implements RestService {
 
             var newChannelDto = new NewChannelDto();
             newChannelDto.setName(channelName);
+            newChannelDto.setCreator(name);
 
             if (CommandsUtils.hasPrivateFlag(text)) {
                 newChannelDto.setType(ChannelType.PRIVATE.name());
@@ -47,7 +49,11 @@ public class CustomRestService implements RestService {
                 newChannelDto.setType(ChannelType.PUBLIC.name());
             }
 
-            payments.request().post(Entity.entity(newChannelDto, MediaType.APPLICATION_JSON));
+            Response response = channels.request()
+                    .post(Entity.entity(newChannelDto, MediaType.APPLICATION_JSON));
+
+            ChannelDto channelDto = response.readEntity(ChannelDto.class);
+            currentChannel.setId(channelDto.getId());
         }
     }
 }

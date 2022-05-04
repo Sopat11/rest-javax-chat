@@ -8,7 +8,7 @@ import java.util.List;
 public interface ChannelService {
 
     List<Channel> getAll();
-    Channel save(NewChannel newChannel);
+    Channel create(NewChannel newChannel);
     boolean loginToChannel(Long channelId, String username);
     boolean logoutFromChannel(Long channelId, String username);
     List<String> getLoggedUsers(Long channelId);

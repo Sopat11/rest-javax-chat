@@ -20,8 +20,8 @@ public class DefaultChannelService implements ChannelService {
     }
 
     @Override
-    public Channel save(NewChannel newChannel) {
-        return channelService.save(newChannel);
+    public Channel create(NewChannel newChannel) {
+        return channelService.create(newChannel);
     }
 
     @Override

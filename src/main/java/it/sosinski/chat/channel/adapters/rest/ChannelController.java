@@ -37,10 +37,11 @@ public class ChannelController {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response save(@Valid NewChannelDto newChannelDto) {
+    public Response create(@Valid NewChannelDto newChannelDto) {
         var channel = channelMapper.toDomain(newChannelDto);
-        var savedChannel = channelService.save(channel);
+        var savedChannel = channelService.create(channel);
         var channelDto = channelMapper.toDto(savedChannel);
+
         return Response.created(getLocation(channelDto.getId()))
                 .entity(channelDto)
                 .build();

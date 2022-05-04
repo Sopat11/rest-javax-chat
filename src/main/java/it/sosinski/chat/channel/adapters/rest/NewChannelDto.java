@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class NewChannelDto {
 
+    private String creator;
     private String name;
     @ChannelTypeV
     private String type;
