@@ -68,6 +68,8 @@ public class CustomRestService implements RestService {
                     .method("PATCH");
 
             currentChannel.setId(Long.valueOf(channelId));
+        } else {
+            log.severe("No such command!");
         }
     }
 }
