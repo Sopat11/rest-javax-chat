@@ -6,6 +6,7 @@ import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.utils.CommandsUtils;
 import it.sosinski.chat.utils.TextUtils;
+import lombok.extern.java.Log;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+@Log
 public class CustomRestService implements RestService {
 
     ResteasyClient restClient = new ResteasyClientBuilderImpl()
@@ -54,6 +56,18 @@ public class CustomRestService implements RestService {
 
             ChannelDto channelDto = response.readEntity(ChannelDto.class);
             currentChannel.setId(channelDto.getId());
+        } else if (CommandsUtils.isAskingToJoinChannel(text)) {
+            if (!TextUtils.hasTwoParentheses(text)) {
+                log.severe("You need to give a channel id!");
+                return;
+            }
+            String channelId = TextUtils.getTextFromParentheses(text);
+
+            channels.path("/" + channelId + "/login/" + name)
+                    .request()
+                    .method("PATCH");
+
+            currentChannel.setId(Long.valueOf(channelId));
         }
     }
 }

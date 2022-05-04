@@ -17,4 +17,8 @@ public class CommandsUtils {
     public static boolean hasPrivateFlag(String text) {
         return text.contains("--p");
     }
+
+    public static boolean isAskingToJoinChannel(String text) {
+        return text.contains("--join");
+    }
 }
