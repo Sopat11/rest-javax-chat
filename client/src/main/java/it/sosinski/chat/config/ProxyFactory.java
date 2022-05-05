@@ -1,4 +1,4 @@
-package it.sosinski.chat.factory;
+package it.sosinski.chat.config;
 
 import javax.inject.Singleton;
 import javax.naming.Context;

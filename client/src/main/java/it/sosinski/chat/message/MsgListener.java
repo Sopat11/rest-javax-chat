@@ -3,18 +3,18 @@ package it.sosinski.chat.message;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.commons.message.ChatMessage;
 import it.sosinski.chat.commons.message.MessageType;
-import it.sosinski.chat.factory.ProxyFactory;
+import it.sosinski.chat.config.ProxyFactory;
 import it.sosinski.chat.utils.FileUtils;
 import lombok.extern.java.Log;
 
 import javax.jms.*;
 import javax.naming.NamingException;
 
+import static it.sosinski.chat.constants.JndiConstants.CONNECTION_FACTORY_JNDI_NAME;
+import static it.sosinski.chat.constants.JndiConstants.MESSAGES_TOPIC_JNDI_NAME;
+
 @Log
 public class MsgListener implements Runnable {
-
-    private static final String CONNECTION_FACTORY_JNDI_NAME = "jms/RemoteConnectionFactory";
-    private static final String MESSAGES_TOPIC_JNDI_NAME = "jms/topic/Messages";
 
     private CurrentChannel currentChannel;
 

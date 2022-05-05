@@ -5,6 +5,7 @@ import it.sosinski.chat.channel.adapters.rest.NewChannelDto;
 import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.message.adapters.rest.ChatMessageDto;
+import it.sosinski.chat.utils.ChannelUtils;
 import it.sosinski.chat.utils.CommandsUtils;
 import it.sosinski.chat.utils.ServerPrinter;
 import it.sosinski.chat.utils.TextUtils;
@@ -20,6 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static it.sosinski.chat.manager.ServerMessagesConstants.*;
+
 @Log
 public class CustomRestService implements RestService {
 
@@ -32,42 +35,30 @@ public class CustomRestService implements RestService {
 
     @Override
     public void process(CurrentChannel currentChannel, String text, String name) {
+        // Printing channels
         if (CommandsUtils.isAskingToPrintChannels(text)) {
+            printChannelsIfAny();
 
-            var response = channels.request()
-                    .accept(MediaType.APPLICATION_JSON_TYPE)
-                    .get();
-
-            List<ChannelDto> channelDtos = response.readEntity(new GenericType<>() {
-            });
-
-            if (channelDtos.isEmpty()) {
-                ServerPrinter.print("There are no channels yet!");
-            } else {
-                channelDtos.forEach(System.out::println);
-            }
-
+            // Creating channel
         } else if (CommandsUtils.isAskingToCreateChannel(text)) {
-            String channelName = TextUtils.getTextFromParentheses(text);
-
-            var newChannelDto = new NewChannelDto();
-            newChannelDto.setName(channelName);
-            newChannelDto.setCreator(name);
-
-            if (CommandsUtils.hasPrivateFlag(text)) {
-                newChannelDto.setType(ChannelType.PRIVATE.name());
-            } else {
-                newChannelDto.setType(ChannelType.PUBLIC.name());
+            if (!TextUtils.hasTwoParentheses(text)) {
+                ServerPrinter.print(NO_CHANNEL_NAME);
+                return;
             }
 
-            Response response = channels.request()
-                    .post(Entity.entity(newChannelDto, MediaType.APPLICATION_JSON));
+            NewChannelDto newChannelDto = NewChannelDto.builder()
+                    .creator(name)
+                    .type(getChannelType(text))
+                    .name(TextUtils.getTextFromParentheses(text))
+                    .build();
 
-            ChannelDto channelDto = response.readEntity(ChannelDto.class);
+            ChannelDto channelDto = createChannel(newChannelDto);
             currentChannel.setId(channelDto.getId());
+
+            // Joining channel
         } else if (CommandsUtils.isAskingToJoinChannel(text)) {
             if (!TextUtils.hasTwoParentheses(text)) {
-                ServerPrinter.print("You need to give a channel id!");
+                ServerPrinter.print(NO_CHANNEL_ID);
                 return;
             }
             String channelId = TextUtils.getTextFromParentheses(text);
@@ -78,51 +69,112 @@ public class CustomRestService implements RestService {
 
             if (response.getStatus() == Response.Status.OK.getStatusCode()) {
                 currentChannel.setId(Long.valueOf(channelId));
+                ServerPrinter.print(CONNECTED_TO_SERVER);
             } else {
-                ServerPrinter.print("You're not allowed to join this channel!");
+                String responseString = response.readEntity(String.class);
+                ServerPrinter.print(responseString);
             }
 
+            // Leaving channel
         } else if (CommandsUtils.isAskingToLeaveChannel(text)) {
-            Long channelId = currentChannel.getId();
+            if (!ChannelUtils.isOnChannel(currentChannel)) {
+                ServerPrinter.print(NOT_CONNECTED_TO_CHANNEL);
+                return;
+            }
+            logout(currentChannel, name);
 
-            channels.path("/" + channelId + "/logout/" + name)
-                    .request()
-                    .method("PATCH");
-
-            currentChannel.setId(null);
+            // Printing logged users
         } else if (CommandsUtils.isAskingForLoggedUsers(text)) {
-            Long channelId = currentChannel.getId();
-
-            if (channelId == null) {
-                ServerPrinter.print("You need to connect to a channel!");
+            if (!ChannelUtils.isOnChannel(currentChannel)) {
+                ServerPrinter.print(NOT_CONNECTED_TO_CHANNEL);
                 return;
             }
-            Response response = channels.path("/" + channelId + "/users")
-                    .request()
-                    .get();
 
-            List<String> loggedUsers = response.readEntity(new GenericType<>() {
-            });
-            loggedUsers.forEach(System.out::println);
+            Long channelId = ChannelUtils.getChannelId(currentChannel);
+            printLoggedUsers(channelId);
 
+            // Printing history
         } else if (CommandsUtils.isAskingToPrintHistory(text)) {
-            Long channelId = currentChannel.getId();
-
-            if (channelId == null) {
-                ServerPrinter.print("You need to connect to a channel!");
+            if (!ChannelUtils.isOnChannel(currentChannel)) {
+                ServerPrinter.print(NOT_CONNECTED_TO_CHANNEL);
                 return;
             }
 
-            Response response = messages.path("/history/" + channelId)
-                    .request()
-                    .get();
-
-            List<ChatMessageDto> chatMessages = response.readEntity(new GenericType<>() {
-            });
-            chatMessages.forEach(System.out::println);
+            Long channelId = ChannelUtils.getChannelId(currentChannel);
+            printChatHistory(channelId);
 
         } else {
-            ServerPrinter.print("No such command!");
+            ServerPrinter.print(NO_SUCH_COMMAND);
         }
+    }
+
+    private void printChannelsIfAny() {
+        List<ChannelDto> channelsDto = getChannels();
+        if (channelsDto.isEmpty()) {
+            ServerPrinter.print(NO_CHANNELS);
+        } else {
+            printChannels(channelsDto);
+        }
+    }
+
+    private List<ChannelDto> getChannels() {
+        return channels.request()
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .get()
+                .readEntity(new GenericType<>() {});
+    }
+
+    private ChannelDto createChannel(NewChannelDto newChannelDto) {
+        return channels.request()
+                .post(Entity.entity(newChannelDto, MediaType.APPLICATION_JSON))
+                .readEntity(ChannelDto.class);
+    }
+
+    private String getChannelType(String text) {
+        if (CommandsUtils.hasPrivateFlag(text)) {
+            return ChannelType.PRIVATE.name();
+        } else {
+            return ChannelType.PUBLIC.name();
+        }
+    }
+
+    private void logout(CurrentChannel currentChannel, String name) {
+        Long channelId = currentChannel.getId();
+        channels.path("/" + channelId + "/logout/" + name)
+                .request()
+                .method("PATCH");
+
+        currentChannel.setId(null);
+        ServerPrinter.print(LEFT_THE_CHANNEL);
+    }
+
+    private void printLoggedUsers(Long channelId) {
+        List<String> loggedUsers = getLoggedUsers(channelId);
+        loggedUsers.forEach(System.out::println);
+    }
+
+    private List<String> getLoggedUsers(Long channelId) {
+        return channels.path("/" + channelId + "/users")
+                .request()
+                .get()
+                .readEntity(new GenericType<>() {
+                });
+    }
+
+    private void printChatHistory(Long channelId) {
+        List<ChatMessageDto> chatMessages = getChatMessages(channelId);
+        chatMessages.forEach(System.out::println);
+    }
+
+    private List<ChatMessageDto> getChatMessages(Long channelId) {
+        return messages.path("/history/" + channelId)
+                .request()
+                .get()
+                .readEntity(new GenericType<>() {
+                });
+    }
+
+    private void printChannels(List<ChannelDto> channelsDto) {
+        channelsDto.forEach(System.out::println);
     }
 }

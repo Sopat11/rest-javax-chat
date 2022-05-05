@@ -11,6 +11,6 @@ public class ChannelDto {
 
     @Override
     public String toString() {
-        return "Kanał id: " + id + ", nazwa: " + name + ", typ: " + type;
+        return "Channel id: " + id + ", name: " + name + ", type: " + type.toLowerCase();
     }
 }
