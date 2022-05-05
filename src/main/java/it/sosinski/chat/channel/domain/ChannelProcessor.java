@@ -3,6 +3,7 @@ package it.sosinski.chat.channel.domain;
 import it.sosinski.chat.channel.ports.ChannelRepository;
 import it.sosinski.chat.channel.ports.ChannelService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.util.List;
 
@@ -33,8 +34,13 @@ public class ChannelProcessor implements ChannelService {
         return channelRepository.save(channel);
     }
 
+    @SneakyThrows
     @Override
     public boolean loginToChannel(Long channelId, String username) {
+        Channel channel = channelRepository.getById(channelId);
+        if (channel == null) {
+            throw new ChannelNotFoundException("There is no channel with id " + channelId + "!");
+        }
         boolean isAllowed = channelRepository.isAllowed(channelId, username);
 
         if (isAllowed) {

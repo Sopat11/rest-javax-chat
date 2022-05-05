@@ -3,20 +3,18 @@ package it.sosinski.chat.manager;
 import it.sosinski.chat.commons.channel.CurrentChannel;
 import it.sosinski.chat.commons.message.ChatMessage;
 import it.sosinski.chat.commons.message.MessageType;
-import it.sosinski.chat.factory.ProxyFactory;
-import it.sosinski.chat.utils.FileUtils;
-import it.sosinski.chat.utils.ServerPrinter;
-import it.sosinski.chat.utils.TextUtils;
+import it.sosinski.chat.config.ProxyFactory;
+import it.sosinski.chat.utils.*;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSContext;
-import javax.jms.ObjectMessage;
 import javax.jms.Topic;
 
 import static it.sosinski.chat.constants.JndiConstants.CONNECTION_FACTORY_JNDI_NAME;
 import static it.sosinski.chat.constants.JndiConstants.MESSAGES_TOPIC_JNDI_NAME;
+import static it.sosinski.chat.manager.ServerMessagesConstants.*;
 
 @Log
 public class CustomMassageService implements MassageService {
@@ -33,32 +31,35 @@ public class CustomMassageService implements MassageService {
 
         ChatMessage chatMessage;
 
-        if (!text.startsWith("\\f")) {
-
-            if (currentChannel.getId() == null) {
-                ServerPrinter.print("You need to connect to a channel!");
-                return;
-            }
-
-            chatMessage = ChatMessage.builder()
-                    .sender(name)
-                    .channelId(currentChannel.getId())
-                    .type(MessageType.TEXT)
-                    .text(text)
-                    .build();
+        if (!ChannelUtils.isOnChannel(currentChannel)) {
+            ServerPrinter.print(NOT_CONNECTED_TO_CHANNEL);
+            return;
         } else {
-            if (!TextUtils.hasTwoParentheses(text)) {
-                ServerPrinter.print("You need to give a filepath!");
-                return;
+            if (!CommandsUtils.isSendingFile(text)) {
+
+                chatMessage = ChatMessage.builder()
+                        .sender(name)
+                        .channelId(currentChannel.getId())
+                        .type(MessageType.TEXT)
+                        .text(text)
+                        .build();
+            } else {
+                if (!TextUtils.hasTwoParentheses(text)) {
+                    ServerPrinter.print(NO_FILEPATH);
+                    return;
+                }
+
+                String filePath = TextUtils.getTextFromParentheses(text);
+                if (!FileUtils.doesFileExist(filePath)) {
+                    ServerPrinter.print(NO_SUCH_FILE);
+                    return;
+                }
+
+                chatMessage = FileUtils.encodeFile(filePath, name, currentChannel.getId());
             }
-            String filePath = TextUtils.getTextFromParentheses(text);
-            chatMessage = FileUtils.encodeFile(filePath, name, currentChannel.getId());
         }
 
-        ObjectMessage objectMessage = jmsContext.createObjectMessage(chatMessage);
-        objectMessage.setLongProperty("channelId", 1L);
-        jmsContext.createProducer().send(topic, objectMessage);
-
+        jmsContext.createProducer().send(topic, chatMessage);
         jmsContext.close();
     }
 }

@@ -29,4 +29,12 @@ public class CommandsUtils {
     public static boolean isAskingForLoggedUsers(String text) {
         return text.contains("--online");
     }
+
+    public static boolean isAskingToPrintHistory(String text) {
+        return text.contains("--history");
+    }
+
+    public static boolean isSendingFile(String text) {
+        return text.startsWith("\\f");
+    }
 }

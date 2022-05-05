@@ -27,12 +27,8 @@ public class MsgWriter {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 
             while (true) {
-                String text = reader.readLine();
-                if (text.contains("connect")) {
-                    currentChannel.setId(1L);
-                } else {
-                    managerService.process(currentChannel, text, name);
-                }
+                String text = reader.readLine().trim();
+                managerService.process(currentChannel, text, name);
             }
         }
     }

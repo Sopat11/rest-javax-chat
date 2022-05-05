@@ -4,6 +4,7 @@ import it.sosinski.chat.commons.message.ChatMessage;
 import it.sosinski.chat.commons.message.MessageType;
 import lombok.extern.java.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -56,5 +57,10 @@ public class FileUtils {
         }
 
         return chatMessage;
+    }
+
+    public static boolean doesFileExist(String filepath) {
+        File file = new File("client\\" + filepath);
+        return (file.exists() && !file.isDirectory());
     }
 }
