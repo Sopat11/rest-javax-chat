@@ -4,6 +4,7 @@ import it.sosinski.chat.channel.adapters.rest.ChannelDto;
 import it.sosinski.chat.channel.adapters.rest.NewChannelDto;
 import it.sosinski.chat.commons.channel.ChannelType;
 import it.sosinski.chat.commons.channel.CurrentChannel;
+import it.sosinski.chat.message.adapters.rest.ChatMessageDto;
 import it.sosinski.chat.utils.CommandsUtils;
 import it.sosinski.chat.utils.ServerPrinter;
 import it.sosinski.chat.utils.TextUtils;
@@ -25,7 +26,9 @@ public class CustomRestService implements RestService {
     ResteasyClient restClient = new ResteasyClientBuilderImpl()
             .register(Jackson2JsonpInterceptor.class)
             .build();
+
     ResteasyWebTarget channels = restClient.target("http://localhost:8080/chat/api/channels");
+    ResteasyWebTarget messages = restClient.target("http://localhost:8080/chat/api/messages");
 
     @Override
     public void process(CurrentChannel currentChannel, String text, String name) {
@@ -37,7 +40,12 @@ public class CustomRestService implements RestService {
 
             List<ChannelDto> channelDtos = response.readEntity(new GenericType<>() {
             });
-            channelDtos.forEach(System.out::println);
+
+            if (channelDtos.isEmpty()) {
+                ServerPrinter.print("There are no channels yet!");
+            } else {
+                channelDtos.forEach(System.out::println);
+            }
 
         } else if (CommandsUtils.isAskingToCreateChannel(text)) {
             String channelName = TextUtils.getTextFromParentheses(text);
@@ -96,6 +104,22 @@ public class CustomRestService implements RestService {
             List<String> loggedUsers = response.readEntity(new GenericType<>() {
             });
             loggedUsers.forEach(System.out::println);
+
+        } else if (CommandsUtils.isAskingToPrintHistory(text)) {
+            Long channelId = currentChannel.getId();
+
+            if (channelId == null) {
+                ServerPrinter.print("You need to connect to a channel!");
+                return;
+            }
+
+            Response response = messages.path("/history/" + channelId)
+                    .request()
+                    .get();
+
+            List<ChatMessageDto> chatMessages = response.readEntity(new GenericType<>() {
+            });
+            chatMessages.forEach(System.out::println);
 
         } else {
             ServerPrinter.print("No such command!");
