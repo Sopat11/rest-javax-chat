@@ -37,4 +37,8 @@ public class CommandsUtils {
     public static boolean isSendingFile(String text) {
         return text.startsWith("\\f");
     }
+
+    public static boolean isAskingToAllowChatWorker(String text) {
+        return text.contains("--allow");
+    }
 }

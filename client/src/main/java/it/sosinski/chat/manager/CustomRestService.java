@@ -103,6 +103,21 @@ public class CustomRestService implements RestService {
             Long channelId = ChannelUtils.getChannelId(currentChannel);
             printChatHistory(channelId);
 
+        } else if (CommandsUtils.isAskingToAllowChatWorker(text)) {
+            if (!ChannelUtils.isOnChannel(currentChannel)) {
+                ServerPrinter.print(NOT_CONNECTED_TO_CHANNEL);
+                return;
+            }
+
+            Long channelId = ChannelUtils.getChannelId(currentChannel);
+            String username = TextUtils.getTextFromParentheses(text);
+            Response response = channels.path("/" + channelId + "/allow/" + username)
+                    .request()
+                    .method("PATCH");
+
+            String responseString = response.readEntity(String.class);
+            ServerPrinter.print(responseString);
+
         } else {
             ServerPrinter.print(NO_SUCH_COMMAND);
         }
