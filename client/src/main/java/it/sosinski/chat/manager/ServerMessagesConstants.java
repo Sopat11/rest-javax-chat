@@ -9,5 +9,7 @@ public class ServerMessagesConstants {
     public static final String NO_SUCH_COMMAND = "No such command!";
     public static final String LEFT_THE_CHANNEL = "Successfully left the channel";
     public static final String NO_CHANNELS = "There are no channels yet!";
+    public static final String NO_FILEPATH = "You need to give a filepath!";
+    public static final String NO_SUCH_FILE = "No such file";
 
 }
